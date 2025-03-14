@@ -1,6 +1,6 @@
 "use client";
-import { useCallback, useMemo, useState } from "react";
-import { formatPhoneNumber, getCountries, getCountryCallingCode, Country } from "react-phone-number-input";
+import { ChangeEvent, useCallback, useMemo, useState } from "react";
+import { formatPhoneNumber, parsePhoneNumber, getCountries, getCountryCallingCode, Country } from "react-phone-number-input";
 import en from 'react-phone-number-input/locale/en';
 import { Input } from "../ui/input";
 import CountrySelect from "./country-select";
@@ -9,12 +9,12 @@ import type { ControllerRenderProps } from "react-hook-form";
 const ElevatorPhoneInput = (props: ControllerRenderProps) => {
     const [phoneNumber, setPhoneNumber] = useState<string>('');
     const [country, setCountry] = useState<Country>('US');
-    const handleInputChange = (e: Event) => {
-        const input = e.target as HTMLInputElement;
-        // const phoneString = `+${getCountryCallingCode(country)}${input.value}`
-        // const formattedNumber = formatPhoneNumber(phoneString);
-        // console.log(phoneString, formattedNumber);
-        setPhoneNumber(input.value);
+    const handleInputChange = (e: ChangeEvent) => {
+        const value = (e.target as HTMLInputElement).value;
+        const phoneString = `+${getCountryCallingCode(country)}${value}`
+        const formattedNumber = formatPhoneNumber(phoneString);
+        setPhoneNumber(formattedNumber || value);
+        props.onChange(`+${getCountryCallingCode(country)}${formattedNumber || value}`);
     }
     const handleCountryChange = useCallback((value: Country) => {
         setCountry(value);
@@ -38,8 +38,9 @@ const ElevatorPhoneInput = (props: ControllerRenderProps) => {
                 id="phone" 
                 prefix={<span>{`+${countryCode}`}</span>} 
                 className="flex-1" 
-                value={props.value} 
-                onChange={props.onChange} 
+                {...props}
+                onChange={(e) => handleInputChange(e)}
+                value={phoneNumber}
             />
         </div>
     )

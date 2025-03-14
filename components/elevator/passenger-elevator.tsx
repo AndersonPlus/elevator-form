@@ -47,7 +47,7 @@ export const PassengerElevatorOption = ({ options, type, value, onChange }: { op
     const [inputVal, setInputVal] = useState('')
     return (
         <Select
-            value={String(value)}
+            defaultValue={String(value)}
             onValueChange={(val: string) => onChange(Number(val))}
             onOpenChange={(open) => {
                 if (!open && inputVal) {

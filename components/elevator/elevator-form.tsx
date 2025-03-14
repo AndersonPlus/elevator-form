@@ -11,6 +11,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import ElevatorPhoneInput from "./elevator-phone-input";
 import { PassengerElevatorForm } from "./passenger-elevator";
+import { toast } from "sonner"
+import { redirect } from "next/navigation";
+
 export const passengerElevatorSchema = z.object({
     load: z.number({
         required_error: "Load is required",
@@ -70,7 +73,13 @@ const ElevatorForm = () => {
             </CardHeader>
             <CardContent>
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(handleElevatorFormSubmit, (err) => { console.log('error', err) })}>
+                    <form onSubmit={form.handleSubmit((data) => {
+                        toast.success('Your Form submitted successfully', {
+                            position: 'top-center'
+                        })
+                        handleElevatorFormSubmit(data)
+                        redirect('/success')
+                    }, (err) => { toast.error(JSON.stringify(err))})}>
                         <FormField control={form.control}
                             name="companyName"
                             render={({ field }) => (
@@ -114,10 +123,13 @@ const ElevatorForm = () => {
                                     <FormLabel>Bill Address</FormLabel>
                                     <FormControl>
                                         <Input
-                                            placeholder="input bill address"
+                                            placeholder={form.getValues('billAddressSame') ? "the same as company address" : "input bill address"}
                                             {...field}
                                             value={form.getValues('billAddressSame') ? form.getValues('address') : ''}
                                             disabled={form.getValues('billAddressSame')}
+                                            style={{
+                                                'cursor': form.getValues('billAddressSame')? 'not-allowed' : 'auto',
+                                            }}
                                         />
                                     </FormControl>
                                     <FormMessage />
