@@ -4,6 +4,7 @@ import { Input } from "../ui/input";
 import { FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
+import classnames from "classnames";
 
 export const passengerElevatorRules: Rules<['load', 'width', 'depth']> = {
     order: ['load', 'width', 'depth'],
@@ -57,7 +58,9 @@ export const PassengerElevatorOption = ({ options, type, value, onChange }: { op
             }}
         >
             <SelectTrigger className="w-full">
-                <SelectValue placeholder={`Select ${type}`}>{value}</SelectValue>
+                <span className={classnames({
+                    'text-gray-400': !value,
+                })}>{value || `Select ${type}`}</span>
             </SelectTrigger>
             <SelectContent>
                 <SelectGroup>
