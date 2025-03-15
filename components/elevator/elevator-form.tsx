@@ -74,11 +74,14 @@ const ElevatorForm = () => {
             <CardContent>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit((data) => {
-                        toast.success('Your Form submitted successfully', {
-                            position: 'top-center'
+                        handleElevatorFormSubmit(data).then(val => {
+                            if (val.code === 200) {
+                                toast.success(val.message, {
+                                    position: 'top-center'
+                                })
+                                redirect('/success')
+                            }
                         })
-                        handleElevatorFormSubmit(data)
-                        redirect('/success')
                     }, (err) => { toast.error(JSON.stringify(err))})}>
                         <FormField control={form.control}
                             name="companyName"
