@@ -1,6 +1,6 @@
 const AppLayot = ({ children }: { children: React.ReactNode }) => {
     return (
-        <main className="w-screen flex justify-center pt-16">
+        <main className="w-screen pt-16 flex flex-col items-center">
             { children }
         </main>
     )

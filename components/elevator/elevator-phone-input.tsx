@@ -36,7 +36,7 @@ const ElevatorPhoneInput = (props: ControllerRenderProps) => {
             <CountrySelect countries={countries} onCountryChange={handleCountryChange} defaultCountry={'US'} />
             <Input 
                 id="phone" 
-                prefix={<span>{`+${countryCode}`}</span>} 
+                prefix={(<span>{`+${countryCode}`}</span>) as React.ReactNode} 
                 className="flex-1" 
                 {...props}
                 onChange={(e) => handleInputChange(e)}
